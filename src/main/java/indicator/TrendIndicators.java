@@ -1,5 +1,6 @@
 package indicator;
 
+import base.Tree;
 import org.apache.commons.lang3.tuple.Pair;
 
 import static indicator.Helper.subtract;
@@ -58,6 +59,45 @@ public class TrendIndicators {
         double[] signal = ema(9, macd);
 
         return Pair.of(macd, signal);
+    }
+
+    // Moving max for the given period.
+    public static double[] max(int period, double[] values) {
+        double[] result = new double[values.length];
+        double[] buffer = new double[period];
+        Tree bst = Tree.New();
+        for (int i = 0; i < values.length; i++) {
+            bst.insert(values[i]);
+
+            if (i >= period) {
+                bst.remove(buffer[i % period]);
+            }
+
+            buffer[i % period] = values[i];
+            result[i] = bst.max().doubleValue();
+        }
+
+        return result;
+    }
+
+    // Moving min for the given period.
+    public static double[] min(int period, double[] values) {
+        double[] result = new double[values.length];
+        double[] buffer = new double[period];
+        Tree bst = Tree.New();
+
+        for (int i = 0; i < values.length; i++) {
+            bst.insert(values[i]);
+
+            if (i >= period) {
+                bst.remove(buffer[i % period]);
+            }
+
+            buffer[i % period] = values[i];
+            result[i] = bst.min().doubleValue();
+        }
+
+        return result;
     }
 
 }

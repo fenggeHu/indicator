@@ -20,7 +20,7 @@ public class VolatilityIndicators {
     // Lower Band = SMA(Low * (1 - 4 * (High - Low) / (High + Low)))
     //
     // Returns upper band, middle band, lower band.
-    public static Triple<double[], double[], double[]> AccelerationBands(double[] high, double[] low, double[] closing) {
+    public static Triple<double[], double[], double[]> accelerationBands(double[] high, double[] low, double[] closing) {
         checkSameSize(high, low, closing);
 
         double[] k = divide(subtract(high, low), add(high, low));
@@ -39,7 +39,7 @@ public class VolatilityIndicators {
     // ATR = SMA TR
     //
     // Returns tr, atr
-    public static Pair<double[], double[]> Atr(int period, double[] high, double[] low, double[] closing) {
+    public static Pair<double[], double[]> atr(int period, double[] high, double[] low, double[] closing) {
         checkSameSize(high, low, closing);
 
         double[] tr = new double[closing.length];
@@ -61,7 +61,7 @@ public class VolatilityIndicators {
     // Band Width = (Upper Band - Lower Band) / Middle Band
     //
     // Returns bandWidth, bandWidthEma90
-    public static Pair<double[], double[]> BollingerBandWidth(double[] middleBand, double[] upperBand, double[] lowerBand) {
+    public static Pair<double[], double[]> bollingerBandWidth(double[] middleBand, double[] upperBand, double[] lowerBand) {
         checkSameSize(middleBand, upperBand, lowerBand);
         double[] bandWidth = new double[middleBand.length];
         for (int i = 0; i < bandWidth.length; i++) {
@@ -80,7 +80,7 @@ public class VolatilityIndicators {
     // Lower Band = 20-Period SMA - 2 (20-Period Std)
     //
     // Returns middle band, upper band, lower band.
-    public static Triple<double[], double[], double[]> BollingerBands(double[] closing) {
+    public static Triple<double[], double[], double[]> bollingerBands(double[] closing) {
         double[] middleBand = sma(20, closing);
 
         double[] std = stdFromSma(20, closing, middleBand);
@@ -90,6 +90,28 @@ public class VolatilityIndicators {
         double[] lowerBand = subtract(middleBand, std2);
 
         return Triple.of(middleBand, upperBand, lowerBand);
+    }
+
+    // Chandelier Exit. It sets a trailing stop-loss based on the Average True Value (ATR).
+    //
+    // Chandelier Exit Long = 22-Period SMA High - ATR(22) * 3
+    // Chandelier Exit Short = 22-Period SMA Low + ATR(22) * 3
+    //
+    // Returns chandelierExitLong, chandelierExitShort
+    public static Pair<double[], double[]> chandelierExit(double[] high, double[] low, double[] closing) {
+        double[] atr22 = atr(22, high, low, closing).getRight();
+        double[] highestHigh22 = TrendIndicators.max(22, high);
+        double[] lowestLow22 = TrendIndicators.min(22, low);
+
+        double[] chandelierExitLong = new double[closing.length];
+        double[] chandelierExitShort = new double[closing.length];
+
+        for (int i = 0; i < chandelierExitLong.length; i++) {
+            chandelierExitLong[i] = highestHigh22[i] - (atr22[i] * 3);
+            chandelierExitShort[i] = lowestLow22[i] + (atr22[i] * 3);
+        }
+
+        return Pair.of(chandelierExitLong, chandelierExitShort);
     }
 
     // Standard deviation.
