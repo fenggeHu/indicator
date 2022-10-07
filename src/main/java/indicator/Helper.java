@@ -87,4 +87,60 @@ public class Helper {
         return result;
     }
 
+    // Generate numbers.
+    public static double[] generateNumbers(double begin, double end, double step) {
+        int n = (int) Math.round((end - begin) / step);
+
+        double[] numbers = new double[n];
+
+        for (int i = 0; i < n; i++) {
+            numbers[i] = begin + (step * i);
+        }
+
+        return numbers;
+    }
+
+    // Convets the []int64 to []float64.
+    public static double[] asDouble(long[] values) {
+        double[] result = new double[values.length];
+
+        for (int i = 0; i < values.length; i++) {
+            result[i] = new Double(values[i]);
+        }
+
+        return result;
+    }
+
+    // Shift right for period and fills with value.
+    public static double[] shiftRightAndFillBy(int period, double fill, double[] values) {
+        double[] result = new double[values.length];
+
+        for (int i = 0; i < result.length; i++) {
+            if (i < period) {
+                result[i] = fill;
+            } else {
+                result[i] = values[i - period];
+            }
+        }
+
+        return result;
+    }
+
+    // Shift right for period.
+    public static double[] shiftRight(int period, double[] values) {
+        return shiftRightAndFillBy(period, 0, values);
+    }
+
+
+    // Abs of given values.
+    public static double[] abs(double[] values) {
+        double[] result = new double[values.length];
+
+        for (int i = 0; i < values.length; i++) {
+            result[i] = Math.abs(values[i]);
+        }
+
+        return result;
+    }
+
 }
