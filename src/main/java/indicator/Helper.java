@@ -11,17 +11,6 @@ public class Helper {
         return add(values1, subtract);
     }
 
-    // Add values1 and values2.
-    public static double[] add(double[] values1, double[] values2) {
-        checkSameSize(values1, values2);
-
-        double[] result = new double[values1.length];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = values1[i] + values2[i];
-        }
-
-        return result;
-    }
 
     // Check values same size.
     public static void checkSameSize(double[]... values) {
@@ -46,4 +35,56 @@ public class Helper {
 
         return result;
     }
+
+    // Multiply values1 and values2.
+    public static double[] multiply(double[] values1, double[] values2) {
+        checkSameSize(values1, values2);
+
+        double[] result = new double[values1.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = values1[i] * values2[i];
+        }
+
+        return result;
+    }
+
+    // Divide values by divider.
+    public static double[] divideBy(double[] values, double divider) {
+        return multiplyBy(values, 1 / divider);
+    }
+
+    // Divide values1 by values2.
+    public static double[] divide(double[] values1, double[] values2) {
+        checkSameSize(values1, values2);
+
+        double[] result = new double[values1.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = values1[i] / values2[i];
+        }
+
+        return result;
+    }
+
+    // Add values1 and values2.
+    public static double[] add(double[] values1, double[] values2) {
+        checkSameSize(values1, values2);
+
+        double[] result = new double[values1.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = values1[i] + values2[i];
+        }
+
+        return result;
+    }
+
+    // Add addition to values.
+    public static double[] addBy(double[] values, double addition) {
+        double[] result = new double[values.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = values[i] + addition;
+        }
+
+        return result;
+    }
+
 }

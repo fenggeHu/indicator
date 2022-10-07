@@ -1,4 +1,4 @@
-package indicator.trend;
+package indicator;
 
 /**
  * 趋势方向
