@@ -29,7 +29,7 @@ public class AllStrategy implements Strategy {
         for (Strategy is : all) {
             Action[] ac = is.run(chartBar);
             // 优化计算 - 如果全部是HOLD就返回，不跑后面的Strategy
-            if (isHold(ac)) {
+            if (isAllHold(ac)) {
                 return ac;
             }
             actions.add(ac);
@@ -45,7 +45,7 @@ public class AllStrategy implements Strategy {
         return actions.get(0);
     }
 
-    private boolean isHold(final Action[] actions) {
+    private boolean isAllHold(final Action[] actions) {
         for (Action ac : actions) {
             if (ac != Action.HOLD) {
                 return false;
