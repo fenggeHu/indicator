@@ -5,13 +5,6 @@ package indicator;
  **/
 public class Helper {
 
-    // subtract values2 from values1.
-    protected static double[] subtract(double[] values1, double[] values2) {
-        double[] subtract = multiplyBy(values2, -1);
-        return add(values1, subtract);
-    }
-
-
     // Check values same size.
     public static void checkSameSize(double[]... values) {
         if (values.length < 2) {
@@ -49,7 +42,7 @@ public class Helper {
     }
 
     // Divide values by divider.
-    protected static double[] divideBy(double[] values, double divider) {
+    public static double[] divideBy(double[] values, double divider) {
         return multiplyBy(values, 1 / divider);
     }
 
@@ -66,7 +59,7 @@ public class Helper {
     }
 
     // Add values1 and values2.
-    protected static double[] add(double[] values1, double[] values2) {
+    public static double[] add(double[] values1, double[] values2) {
         checkSameSize(values1, values2);
 
         double[] result = new double[values1.length];
@@ -87,25 +80,23 @@ public class Helper {
         return result;
     }
 
-    // Generate numbers.
-    public static double[] generateNumbers(double begin, double end, double step) {
-        int n = (int) Math.round((end - begin) / step);
-
-        double[] numbers = new double[n];
-
-        for (int i = 0; i < n; i++) {
-            numbers[i] = begin + (step * i);
-        }
-
-        return numbers;
+    // subtract values2 from values1.
+    public static double[] subtract(double[] values1, double[] values2) {
+        double[] subtract = multiplyBy(values2, -1);
+        return add(values1, subtract);
     }
 
-    // Convets the []int64 to []float64.
-    public static double[] asDouble(long[] values) {
+    // Difference between current and before values.
+    public static double[] diff(double[] values, int before) {
+        return subtract(values, shiftRight(before, values));
+    }
+
+    // Percent difference between current and before values.
+    public static double[] percentDiff(double[] values, int before) {
         double[] result = new double[values.length];
 
-        for (int i = 0; i < values.length; i++) {
-            result[i] = new Double(values[i]);
+        for (int i = before; i < values.length; i++) {
+            result[i] = (values[i] - values[i - before]) / values[i - before];
         }
 
         return result;
@@ -131,9 +122,106 @@ public class Helper {
         return shiftRightAndFillBy(period, 0, values);
     }
 
+    // Round value to digits.
+    public static double roundDigits(double value, int digits) {
+        double n = Math.pow(10, digits);
+
+        return Math.round(value * n) / n;
+    }
+
+    // Round values to digits.
+    public static double[] roundDigitsAll(double[] values, int digits) {
+        double[] result = new double[values.length];
+
+        for (int i = 0; i < values.length; i++) {
+            result[i] = roundDigits(values[i], digits);
+        }
+
+        return result;
+    }
+
+    // Generate numbers.
+    public static double[] generateNumbers(double begin, double end, double step) {
+        int n = (int) Math.round((end - begin) / step);
+
+        double[] numbers = new double[n];
+
+        for (int i = 0; i < n; i++) {
+            numbers[i] = begin + (step * i);
+        }
+
+        return numbers;
+    }
+
+    // Convets the []int64 to []float64.
+    public static double[] asDouble(long[] values) {
+        double[] result = new double[values.length];
+
+        for (int i = 0; i < result.length; i++) {
+            result[i] = new Double(values[i]);
+        }
+
+        return result;
+    }
+
+    // Calculate power of base with exponent.
+    public static double[] pow(double[] base, double exponent) {
+        double[] result = new double[base.length];
+
+        for (int i = 0; i < result.length; i++) {
+            result[i] = Math.pow(base[i], exponent);
+        }
+
+        return result;
+    }
+
+    // Extact sign.
+    public static double[] extractSign(double[] values) {
+        double[] result = new double[values.length];
+
+        for (int i = 0; i < result.length; i++) {
+            if (values[i] >= 0) {
+                result[i] = 1;
+            } else {
+                result[i] = -1;
+            }
+        }
+
+        return result;
+    }
+
+    // Keep positives.
+    public static double[] keepPositives(double[] values) {
+        double[] result = new double[values.length];
+
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] > 0) {
+                result[i] = values[i];
+            } else {
+                result[i] = 0;
+            }
+        }
+
+        return result;
+    }
+
+    // Keep negatives.
+    public static double[] keepNegatives(double[] values) {
+        double[] result = new double[values.length];
+
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] < 0) {
+                result[i] = values[i];
+            } else {
+                result[i] = 0;
+            }
+        }
+
+        return result;
+    }
 
     // Sqrt of given values.
-    protected static double[] sqrt(double[] values) {
+    public static double[] sqrt(double[] values) {
         double[] result = new double[values.length];
 
         for (int i = 0; i < values.length; i++) {
