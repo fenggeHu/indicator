@@ -14,5 +14,5 @@ public class ChartBar {
     public double[] close;
     public double[] high;
     public double[] low;
-    public double[] volume;
+    public long[] volume;
 }
