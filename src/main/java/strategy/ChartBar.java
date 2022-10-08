@@ -9,10 +9,10 @@ import lombok.Data;
  **/
 @Data
 public class ChartBar {
-    String[] datetime;
-    double[] open;
-    double[] close;
-    double[] High;
-    double[] Low;
-    double[] Volume;
+    public String[] datetime;
+    public double[] open;
+    public double[] close;
+    public double[] high;
+    public double[] low;
+    public double[] volume;
 }

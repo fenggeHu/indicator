@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description:
+ * Description: 组合策略
  *
  * @author Jinfeng.hu  @Date 2022-10-06
  **/
-public class AllStrategy implements IStrategy {
-    public static IStrategy allStrategy(IStrategy... all) {
+public class AllStrategy implements Strategy {
+    // 一组策略
+    public static Strategy create(Strategy... all) {
         return new AllStrategy(all);
     }
 
-    private IStrategy[] all;
+    private Strategy[] all;
 
-    public AllStrategy(IStrategy... all) {
+    public AllStrategy(Strategy... all) {
         this.all = all;
     }
 
@@ -25,7 +26,7 @@ public class AllStrategy implements IStrategy {
             return null;
         }
         List<Action[]> actions = new ArrayList<>(all.length);
-        for (IStrategy is : all) {
+        for (Strategy is : all) {
             Action[] ac = is.run(chartBar);
             actions.add(ac);
         }

@@ -6,7 +6,7 @@ package strategy;
  * @author Jinfeng.hu  @Date 2022-10-06
  **/
 public enum Action {
-    SEL(-1),
+    SELL(-1),
     HOLD(0),
     BUY(1);
     private int value;
