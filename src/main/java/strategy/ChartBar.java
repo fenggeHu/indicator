@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * Description: chart bar
  *
- * @author Jinfeng.hu  @Date 2022-10-06
+ * @author fengge.hu  @Date 2022-10-06
  **/
 @Data
 public class ChartBar {

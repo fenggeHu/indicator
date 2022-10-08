@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Description: 组合策略
  *
- * @author Jinfeng.hu  @Date 2022-10-06
+ * @author fengge.hu  @Date 2022-10-06
  **/
 public class AllStrategy implements Strategy {
     // 一组策略
