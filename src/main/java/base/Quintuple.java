@@ -8,6 +8,7 @@ import java.io.Serializable;
  * @author jinfeng.hu  @Date 2022/10/8
  **/
 public class Quintuple<A, B, C, D, E> implements Serializable {
+    private static final long serialVersionUID = 1000202210085L;
     public final A first;
     public final B second;
     public final C third;

@@ -1,14 +1,11 @@
 package indicator;
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
-
+import base.Pair;
 import static indicator.Helper.checkSameSize;
 
 /**
  * @author jinfeng.hu  @Date 2022-10-07
  **/
-@Slf4j
 public class Regression {
 
     // Least square.
@@ -98,8 +95,6 @@ public class Regression {
         double[] b = pair.getRight();
 
         double[] r = new double[x.length];
-        log.info("{}", m);
-        log.info("{}", b);
 
         for (int i = 0; i < r.length; i++) {
             r[i] = (m[i] * x[i]) + b[i];

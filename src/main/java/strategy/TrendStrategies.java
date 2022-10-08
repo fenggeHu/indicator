@@ -1,7 +1,7 @@
 package strategy;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.lang3.tuple.Triple;
+import base.Pair;
+import base.Triple;
 
 import static indicator.TrendIndicators.*;
 

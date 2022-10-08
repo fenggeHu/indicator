@@ -2,8 +2,9 @@ package base;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.lang3.tuple.Pair;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @author jinfeng.hu  @Date 2022-10-07
@@ -29,8 +30,8 @@ public class Tree {
         Node curNode = this.root;
 
         while (true) {
-            // 比较2个数字 FIXME 待优化
-            if (newNode.value.doubleValue() <= curNode.value.doubleValue()) {
+            // 比较2个数字
+            if (compare(newNode.value, curNode.value) <= 0) {
                 if (curNode.left == null) {
                     curNode.left = newNode;
                     return;
@@ -48,25 +49,38 @@ public class Tree {
         }
     }
 
+    // 比较时四舍五入保留6位小数 // 使用float类型注意精度损失
+    private int compare(Number v1, Number v2) {
+        if (null == v1) {
+            v1 = 0;
+        }
+        if (null == v2) {
+            v2 = 0;
+        }
+        // 为避免转换的精度问题 - 数字类型转换成字符串再转成BigDecimal
+        BigDecimal bd1 = new BigDecimal(v1.toString()).setScale(6, RoundingMode.HALF_UP);
+        BigDecimal bd2 = new BigDecimal(v2.toString()).setScale(6, RoundingMode.HALF_UP);
+        return bd1.compareTo(bd2);
+    }
+
     // Removes the given value.
     public boolean remove(Number value) {
         Node parent = null;
         Node node = this.root;
 
         while (node != null) {
-            switch (NumberUtils.toScaledBigDecimal(value.doubleValue())
-                    .compareTo(NumberUtils.toScaledBigDecimal(node.value.doubleValue()))) {
+            switch (compare(value, node.value)) {
                 case 0:
                     this.removeNode(parent, node);
                     return true;
-
                 case -1:
                     parent = node;
                     node = node.left;
-
+                    break;
                 case 1:
                     parent = node;
                     node = node.right;
+                    break;
             }
         }
 

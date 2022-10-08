@@ -1,8 +1,8 @@
 package indicator;
 
 import base.Quintuple;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.lang3.tuple.Triple;
+import base.Pair;
+import base.Triple;
 
 import static indicator.Helper.*;
 import static indicator.TrendIndicators.*;
