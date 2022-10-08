@@ -1,8 +1,5 @@
 package strategy;
 
-import indicator.Action;
-import indicator.ChartBar;
-
 /**
  * 策略接口
  *

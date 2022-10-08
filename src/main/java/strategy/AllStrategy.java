@@ -1,8 +1,5 @@
 package strategy;
 
-import indicator.Action;
-import indicator.ChartBar;
-
 import java.util.ArrayList;
 import java.util.List;
 
