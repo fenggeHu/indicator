@@ -19,7 +19,7 @@ public class VolumeIndicators {
     // AD = Previous AD + CMFV
     //
     // Returns ad.
-    public static double[] AccumulationDistribution(double[] high, double[] low, double[] closing, long[] volume) {
+    public static double[] accumulationDistribution(double[] high, double[] low, double[] closing, long[] volume) {
         checkSameSize(high, low, closing);
 
         double[] ad = new double[closing.length];

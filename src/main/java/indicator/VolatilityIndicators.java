@@ -203,7 +203,7 @@ public class VolatilityIndicators {
     // Middle Channel = (Upper Channel + Lower Channel) / 2
     //
     // Returns upperChannel, middleChannel, lowerChannel.
-    public static Triple<double[], double[], double[]> DonchianChannel(int period, double[] closing) {
+    public static Triple<double[], double[], double[]> donchianChannel(int period, double[] closing) {
         double[] upperChannel = TrendIndicators.max(period, closing);
         double[] lowerChannel = TrendIndicators.min(period, closing);
         double[] middleChannel = divideBy(add(upperChannel, lowerChannel), 2);
