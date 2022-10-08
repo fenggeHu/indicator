@@ -12,7 +12,8 @@ public class StrategyTests {
     public void testAllStrategy() {
         Strategy strategy = AllStrategy.create(
                 TrendStrategies::chandeForecastOscillatorStrategy,
-                TrendStrategies::macdStrategy);
+                TrendStrategies::macdStrategy,
+                TrendStrategies.makeKdjStrategy(9,3,3));
 
         ChartBar chartBar = new ChartBar();
         int max = 30;
