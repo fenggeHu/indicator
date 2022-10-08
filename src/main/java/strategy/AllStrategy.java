@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description: 组合策略
+ * Description: 复合策略 - 多个策略的组合
  *
- * @author fengge.hu  @Date 2022-10-06
+ * @author jinfeng.hu  @Date 2022-10-06
  **/
 public class AllStrategy implements Strategy {
     // 一组策略

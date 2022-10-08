@@ -19,7 +19,7 @@ public class Regression {
     //
     // m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)
     // b = (sumY - m * sumX) / n
-    public static Pair<Double, Double> leastSquare(double[] x, double[] y) {
+    public static Pair<Double, Double> LeastSquare(double[] x, double[] y) {
         checkSameSize(x, y);
 
         double sumX = 0, sumX2 = 0, sumY = 0, sumXY = 0;
@@ -45,7 +45,7 @@ public class Regression {
     //
     // m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)
     // b = (sumY - m * sumX) / n
-    public static Pair<double[], double[]> movingLeastSquare(int period, double[] x, double[] y) {
+    public static Pair<double[], double[]> MovingLeastSquare(int period, double[] x, double[] y) {
         checkSameSize(x, y);
         double[] m = new double[x.length];
         double[] b = new double[x.length];
@@ -76,8 +76,8 @@ public class Regression {
     // Linear regression using least square method.
     //
     // y = mx + b
-    public static double[] linearRegressionUsingLeastSquare(double[] x, double[] y) {
-        Pair<Double, Double> pair = leastSquare(x, y);
+    public static double[] LinearRegressionUsingLeastSquare(double[] x, double[] y) {
+        Pair<Double, Double> pair = LeastSquare(x, y);
         double m = pair.getLeft();
         double b = pair.getRight();
 
@@ -92,8 +92,8 @@ public class Regression {
     // Moving linear regression using least square.
     //
     // y = mx + b
-    public static double[] movingLinearRegressionUsingLeastSquare(int period, double[] x, double[] y) {
-        Pair<double[], double[]> pair = movingLeastSquare(period, x, y);
+    public static double[] MovingLinearRegressionUsingLeastSquare(int period, double[] x, double[] y) {
+        Pair<double[], double[]> pair = MovingLeastSquare(period, x, y);
         double[] m = pair.getLeft();
         double[] b = pair.getRight();
 

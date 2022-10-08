@@ -4,16 +4,16 @@ import org.apache.commons.lang3.RandomUtils;
 import org.junit.Test;
 
 /**
- * @author fengge.hu  @Date 2022/10/8
+ * @author jinfeng.hu  @Date 2022/10/8
  **/
 public class StrategyTests {
 
     @Test
     public void testAllStrategy() {
         Strategy strategy = AllStrategy.create(
-                TrendStrategies::chandeForecastOscillatorStrategy,
-                TrendStrategies::macdStrategy,
-                TrendStrategies.makeKdjStrategy(9,3,3));
+                TrendStrategies::ChandeForecastOscillatorStrategy,
+                TrendStrategies::MacdStrategy,
+                TrendStrategies.MakeKdjStrategy(9,3,3));
 
         ChartBar chartBar = new ChartBar();
         int max = 30;

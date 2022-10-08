@@ -3,7 +3,7 @@ package strategy;
 import static indicator.MomentumIndicators.*;
 
 /**
- * @author fengge.hu  @Date 2022/10/8
+ * @author jinfeng.hu  @Date 2022/10/8
  **/
 public class MomentumStrategies {
 
@@ -11,7 +11,7 @@ public class MomentumStrategies {
     public static Action[] AwesomeOscillatorStrategy(final ChartBar asset) {
         Action[] actions = new Action[asset.getDatetime().length];
 
-        double[] ao = awesomeOscillator(asset.low, asset.high);
+        double[] ao = AwesomeOscillator(asset.low, asset.high);
 
         for (int i = 0; i < actions.length; i++) {
             if (ao[i] > 0) {
@@ -30,7 +30,7 @@ public class MomentumStrategies {
     public static Action[] RsiStrategy(final ChartBar asset, double sellAt, double buyAt) {
         Action[] actions = new Action[asset.getDatetime().length];
 
-        double[] rsi = rsi(asset.close).getRight();
+        double[] rsi = Rsi(asset.close).getRight();
         for (int i = 0; i < actions.length; i++) {
             if (rsi[i] <= buyAt) {
                 actions[i] = Action.BUY;
@@ -60,7 +60,7 @@ public class MomentumStrategies {
     public static Action[] Rsi2Strategy(final ChartBar asset) {
         Action[] actions = new Action[asset.getDatetime().length];
 
-        double[] rsi = rsi2(asset.close).getRight();
+        double[] rsi = Rsi2(asset.close).getRight();
 
         for (int i = 0; i < actions.length; i++) {
             if (rsi[i] < 10) {
@@ -79,7 +79,7 @@ public class MomentumStrategies {
     public static Action[] WilliamsRStrategy(final ChartBar asset) {
         Action[] actions = new Action[asset.getDatetime().length];
 
-        double[] wr = williamsR(asset.low, asset.high, asset.close);
+        double[] wr = WilliamsR(asset.low, asset.high, asset.close);
 
         for (int i = 0; i < actions.length; i++) {
             if (wr[i] < -20) {

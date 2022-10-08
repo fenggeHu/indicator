@@ -23,9 +23,9 @@ public class TrendIndicators {
     // APO = Fast - Slow
     //
     // Returns apo.
-    public static double[] absolutePriceOscillator(int fastPeriod, int slowPeriod, double[] values) {
-        double[] fast = ema(fastPeriod, values);
-        double[] slow = ema(slowPeriod, values);
+    public static double[] AbsolutePriceOscillator(int fastPeriod, int slowPeriod, double[] values) {
+        double[] fast = Ema(fastPeriod, values);
+        double[] slow = Ema(slowPeriod, values);
         double[] apo = subtract(fast, slow);
 
         return apo;
@@ -35,8 +35,8 @@ public class TrendIndicators {
     // frequently used fast and short periods are 14 and 30.
     //
     // Returns apo.
-    public static double[] defaultAbsolutePriceOscillator(double[] values) {
-        return absolutePriceOscillator(14, 30, values);
+    public static double[] DefaultAbsolutePriceOscillator(double[] values) {
+        return AbsolutePriceOscillator(14, 30, values);
     }
 
     // Aroon Indicator. It is a technical indicator that is used to identify trend changes
@@ -50,11 +50,11 @@ public class TrendIndicators {
     // Aroon Down = ((25 - Period Since Last 25 Period Low) / 25) * 100
     //
     // Returns aroonUp, aroonDown
-    public static Pair<double[], double[]> aroon(double[] high, double[] low) {
+    public static Pair<double[], double[]> Aroon(double[] high, double[] low) {
         checkSameSize(high, low);
 
-        int[] sinceLastHigh25 = since(max(25, high));
-        int[] sinceLastLow25 = since(min(25, low));
+        int[] sinceLastHigh25 = Since(Max(25, high));
+        int[] sinceLastLow25 = Since(Min(25, low));
         double[] aroonUp = new double[high.length];
         double[] aroonDown = new double[high.length];
 
@@ -73,7 +73,7 @@ public class TrendIndicators {
     // BOP = (Closing - Opening) / (High - Low)
     //
     // Returns bop.
-    public static double[] balanceOfPower(double[] opening, double[] high, double[] low, double[] closing) {
+    public static double[] BalanceOfPower(double[] opening, double[] high, double[] low, double[] closing) {
         double[] bop = divide(subtract(closing, opening), subtract(high, low));
         return bop;
     }
@@ -88,9 +88,9 @@ public class TrendIndicators {
     // CFO = ((Closing - R) / Closing) * 100
     //
     // Returns cfo.
-    public static double[] chandeForecastOscillator(double[] closing) {
+    public static double[] ChandeForecastOscillator(double[] closing) {
         double[] x = generateNumbers(0, closing.length, 1);
-        double[] r = Regression.linearRegressionUsingLeastSquare(x, closing);
+        double[] r = Regression.LinearRegressionUsingLeastSquare(x, closing);
         double[] cfo = multiplyBy(divide(subtract(closing, r), closing), 100);
 
         return cfo;
@@ -105,10 +105,10 @@ public class TrendIndicators {
     // CMI = (Typical Price - Moving Average) / (0.015 * Mean Deviation)
     //
     // Returns cmi.
-    public static double[] communityChannelIndex(int period, double[] high, double[] low, double[] closing) {
-        double[] tp = typicalPrice(low, high, closing).getLeft();
-        double[] ma = sma(period, tp);
-        double[] md = sma(period, abs(subtract(tp, ma)));
+    public static double[] CommunityChannelIndex(int period, double[] high, double[] low, double[] closing) {
+        double[] tp = TypicalPrice(low, high, closing).getLeft();
+        double[] ma = Sma(period, tp);
+        double[] md = Sma(period, abs(subtract(tp, ma)));
         double[] cci = divide(subtract(tp, ma), multiplyBy(md, 0.015));
         cci[0] = 0;
 
@@ -116,8 +116,8 @@ public class TrendIndicators {
     }
 
     // The default community channel index with the period of 20.
-    public static double[] defaultCommunityChannelIndex(double[] high, double[] low, double[] closing) {
-        return communityChannelIndex(20, high, low, closing);
+    public static double[] DefaultCommunityChannelIndex(double[] high, double[] low, double[] closing) {
+        return CommunityChannelIndex(20, high, low, closing);
     }
 
     // Dema calculates the Double Exponential Moving Average (DEMA).
@@ -125,16 +125,16 @@ public class TrendIndicators {
     // DEMA = (2 * EMA(values)) - EMA(EMA(values))
     //
     // Returns dema.
-    public static double[] dema(int period, double[] values) {
-        double[] ema1 = ema(period, values);
-        double[] ema2 = ema(period, ema1);
+    public static double[] Dema(int period, double[] values) {
+        double[] ema1 = Ema(period, values);
+        double[] ema2 = Ema(period, ema1);
         double[] dema = subtract(multiplyBy(ema1, 2), ema2);
 
         return dema;
     }
 
     // Exponential Moving Average (EMA).
-    public static double[] ema(int period, double[] values) {
+    public static double[] Ema(int period, double[] values) {
         double[] result = new double[values.length];
 
         double k = 2.00 / (1 + period);
@@ -155,11 +155,11 @@ public class TrendIndicators {
     // Signal = 9-Period EMA of MACD.
     //
     // Returns MACD, signal.
-    public static Pair<double[], double[]> macd(double[] close) {
-        double[] ema12 = ema(12, close);
-        double[] ema26 = ema(26, close);
+    public static Pair<double[], double[]> Macd(double[] close) {
+        double[] ema12 = Ema(12, close);
+        double[] ema26 = Ema(26, close);
         double[] macd = subtract(ema12, ema26);
-        double[] signal = ema(9, macd);
+        double[] signal = Ema(9, macd);
 
         return Pair.of(macd, signal);
     }
@@ -173,11 +173,11 @@ public class TrendIndicators {
     // MI = Sum(25, Ratio)
     //
     // Returns mi.
-    public static double[] massIndex(double[] high, double[] low) {
-        double[] ema1 = ema(9, subtract(high, low));
-        double[] ema2 = ema(9, ema1);
+    public static double[] MassIndex(double[] high, double[] low) {
+        double[] ema1 = Ema(9, subtract(high, low));
+        double[] ema2 = Ema(9, ema1);
         double[] ratio = divide(ema1, ema2);
-        double[] mi = sum(25, ratio);
+        double[] mi = Sum(25, ratio);
 
         return mi;
     }
@@ -195,9 +195,9 @@ public class TrendIndicators {
     // CFO = ((Closing - R) / Closing) * 100
     //
     // Returns cfo.
-    public static double[] movingChandeForecastOscillator(int period, double[] closing) {
+    public static double[] MovingChandeForecastOscillator(int period, double[] closing) {
         double[] x = generateNumbers(0, closing.length, 1);
-        double[] r = Regression.movingLinearRegressionUsingLeastSquare(period, x, closing);
+        double[] r = Regression.MovingLinearRegressionUsingLeastSquare(period, x, closing);
 
         double[] cfo = multiplyBy(divide(subtract(closing, r), closing), 100);
 
@@ -205,7 +205,7 @@ public class TrendIndicators {
     }
 
     // Moving max for the given period.
-    public static double[] max(int period, double[] values) {
+    public static double[] Max(int period, double[] values) {
         double[] result = new double[values.length];
         double[] buffer = new double[period];
         Tree bst = Tree.New();
@@ -224,7 +224,7 @@ public class TrendIndicators {
     }
 
     // Moving min for the given period.
-    public static double[] min(int period, double[] values) {
+    public static double[] Min(int period, double[] values) {
         double[] result = new double[values.length];
         double[] buffer = new double[period];
         Tree bst = Tree.New();
@@ -331,8 +331,8 @@ public class TrendIndicators {
     // QS = Sma(Closing - Opening)
     //
     // Returns qs.
-    public static double[] qstick(int period, double[] opening, double[] closing) {
-        double[] qs = sma(period, subtract(closing, opening));
+    public static double[] Qstick(int period, double[] opening, double[] closing) {
+        double[] qs = Sma(period, subtract(closing, opening));
         return qs;
     }
 
@@ -353,15 +353,15 @@ public class TrendIndicators {
     // J = (3 * K) - (2 * D)
     //
     // Returns k, d, j.
-    public static Triple<double[], double[], double[]> kdj(int rPeriod, int kPeriod, int dPeriod,
+    public static Triple<double[], double[], double[]> Kdj(int rPeriod, int kPeriod, int dPeriod,
                                                            double[] high, double[] low, double[] closing) {
-        double[] highest = max(rPeriod, high);
-        double[] lowest = min(rPeriod, low);
+        double[] highest = Max(rPeriod, high);
+        double[] lowest = Min(rPeriod, low);
 
         double[] rsv = multiplyBy(divide(subtract(closing, lowest), subtract(highest, lowest)), 100);
 
-        double[] k = sma(kPeriod, rsv);
-        double[] d = sma(dPeriod, k);
+        double[] k = Sma(kPeriod, rsv);
+        double[] d = Sma(dPeriod, k);
         double[] j = subtract(multiplyBy(k, 3), multiplyBy(d, 2));
 
         return Triple.of(k, d, j);
@@ -371,8 +371,8 @@ public class TrendIndicators {
     // consisting of rPeriod of 9, kPeriod of 3, and dPeriod of 3.
     //
     // Returns k, d, j.
-    public static Triple<double[], double[], double[]> defaultKdj(double[] high, double[] low, double[] closing) {
-        return kdj(9, 3, 3, high, low, closing);
+    public static Triple<double[], double[], double[]> DefaultKdj(double[] high, double[] low, double[] closing) {
+        return Kdj(9, 3, 3, high, low, closing);
     }
 
     // Rolling Moving Average (RMA).
@@ -381,7 +381,7 @@ public class TrendIndicators {
     // R[p] and after is R[i] = ((R[i-1]*(p-1)) + v[i]) / p
     //
     // Returns r.
-    public static double[] rma(int period, double[] values) {
+    public static double[] Rma(int period, double[] values) {
         double[] result = new double[values.length];
         double sum = 0.00;
 
@@ -402,7 +402,7 @@ public class TrendIndicators {
     }
 
     // Simple Moving Average (SMA).
-    public static double[] sma(int period, double[] values) {
+    public static double[] Sma(int period, double[] values) {
         double[] result = new double[values.length];
         double sum = 0.00;
 
@@ -422,7 +422,7 @@ public class TrendIndicators {
     }
 
     // Since last values change.
-    public static int[] since(double[] values) {
+    public static int[] Since(double[] values) {
         int[] result = new int[values.length];
 
         double lastValue = 0.000; // TODO
@@ -445,7 +445,7 @@ public class TrendIndicators {
     }
 
     // Moving sum for the given period.
-    public static double[] sum(int period, double[] values) {
+    public static double[] Sum(int period, double[] values) {
         double[] result = new double[values.length];
         double sum = 0.0;
 
@@ -468,10 +468,10 @@ public class TrendIndicators {
     // EMA3 = EMA(EMA2)
     //
     // Returns tema.
-    public static double[] tema(int period, double[] values) {
-        double[] ema1 = ema(period, values);
-        double[] ema2 = ema(period, ema1);
-        double[] ema3 = ema(period, ema2);
+    public static double[] Tema(int period, double[] values) {
+        double[] ema1 = Ema(period, values);
+        double[] ema2 = Ema(period, ema1);
+        double[] ema3 = Ema(period, ema2);
 
         double[] tema = add(subtract(multiplyBy(ema1, 3), multiplyBy(ema2, 3)), ema3);
 
@@ -486,7 +486,7 @@ public class TrendIndicators {
     //   TRIMA = SMA((period + 1) / 2, SMA((period + 1) / 2, values))
     //
     // Returns trima.
-    public static double[] trima(int period, double[] values) {
+    public static double[] Trima(int period, double[] values) {
         int n1, n2;
 
         if (period % 2 == 0) {
@@ -497,7 +497,7 @@ public class TrendIndicators {
             n2 = n1;
         }
 
-        double[] trima = sma(n1, sma(n2, values));
+        double[] trima = Sma(n1, Sma(n2, values));
         return trima;
     }
 
@@ -512,10 +512,10 @@ public class TrendIndicators {
     // TRIX = (EMA3 - Previous EMA3) / Previous EMA3
     //
     // Returns trix.
-    public static double[] trix(int period, double[] values) {
-        double[] ema1 = ema(period, values);
-        double[] ema2 = ema(period, ema1);
-        double[] ema3 = ema(period, ema2);
+    public static double[] Trix(int period, double[] values) {
+        double[] ema1 = Ema(period, values);
+        double[] ema2 = Ema(period, ema1);
+        double[] ema3 = Ema(period, ema2);
         double[] previous = shiftRightAndFillBy(1, ema3[0], ema3);
         double[] trix = divide(subtract(ema3, previous), previous);
 
@@ -528,9 +528,9 @@ public class TrendIndicators {
     // Typical Price = (High + Low + Closing) / 3
     //
     // Returns typical price, 20-Period SMA.
-    public static Pair<double[], double[]> typicalPrice(double[] low, double[] high, double[] closing) {
+    public static Pair<double[], double[]> TypicalPrice(double[] low, double[] high, double[] closing) {
         checkSameSize(high, low, closing);
-        double[] sma20 = sma(20, closing);
+        double[] sma20 = Sma(20, closing);
         double[] ta = new double[closing.length];
 
         for (int i = 0; i < ta.length; i++) {
@@ -561,7 +561,7 @@ public class TrendIndicators {
     // Based on https://school.stockcharts.com/doku.php?id=technical_indicators:vortex_indicator
     //
     // Returns plusVi, minusVi
-    public static Pair<double[], double[]> vortex(double[] high, double[] low, double[] closing) {
+    public static Pair<double[], double[]> Vortex(double[] high, double[] low, double[] closing) {
         checkSameSize(high, low, closing);
 
         int period = 14;
@@ -607,16 +607,16 @@ public class TrendIndicators {
     // VWMA = Sum(Price * Volume) / Sum(Volume) for a given Period.
     //
     // Returns vwma
-    public static double[] vwma(int period, double[] closing, long[] volume) {
+    public static double[] Vwma(int period, double[] closing, long[] volume) {
         double[] floatVolume = asDouble(volume);
-        double[] vwma = divide(sum(period, multiply(closing, floatVolume)), sum(period, floatVolume));
+        double[] vwma = divide(Sum(period, multiply(closing, floatVolume)), Sum(period, floatVolume));
 
         return vwma;
     }
 
     // The DefaultVwma function calculates VWMA with a period of 20.
-    public static double[] defaultVwma(double[] closing, long[] volume) {
-        return vwma(20, closing, volume);
+    public static double[] DefaultVwma(double[] closing, long[] volume) {
+        return Vwma(20, closing, volume);
     }
 
 }

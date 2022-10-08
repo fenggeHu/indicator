@@ -6,10 +6,10 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import static indicator.Helper.*;
 import static indicator.TrendIndicators.*;
-import static indicator.VolumeIndicators.accumulationDistribution;
+import static indicator.VolumeIndicators.AccumulationDistribution;
 
 /**
- * @author fengge.hu  @Date 2022/10/8
+ * @author jinfeng.hu  @Date 2022/10/8
  **/
 public class MomentumIndicators {
 
@@ -19,10 +19,10 @@ public class MomentumIndicators {
     // AO = 5-Period SMA - 34-Period SMA.
     //
     // Returns ao.
-    public static double[] awesomeOscillator(double[] low, double[] high) {
+    public static double[] AwesomeOscillator(double[] low, double[] high) {
         double[] medianPrice = divideBy(add(low, high), 2);
-        double[] sma5 = sma(5, medianPrice);
-        double[] sma34 = sma(34, medianPrice);
+        double[] sma5 = Sma(5, medianPrice);
+        double[] sma34 = Sma(34, medianPrice);
         double[] ao = subtract(sma5, sma34);
 
         return ao;
@@ -37,9 +37,9 @@ public class MomentumIndicators {
     // CO = Ema(fastPeriod, AD) - Ema(slowPeriod, AD)
     //
     // Returns co, ad.
-    public static Pair<double[], double[]> chaikinOscillator(int fastPeriod, int slowPeriod, double[] low, double[] high, double[] closing, long[] volume) {
-        double[] ad = accumulationDistribution(high, low, closing, volume);
-        double[] co = subtract(ema(fastPeriod, ad), ema(slowPeriod, ad));
+    public static Pair<double[], double[]> ChaikinOscillator(int fastPeriod, int slowPeriod, double[] low, double[] high, double[] closing, long[] volume) {
+        double[] ad = AccumulationDistribution(high, low, closing, volume);
+        double[] co = subtract(Ema(fastPeriod, ad), Ema(slowPeriod, ad));
 
         return Pair.of(co, ad);
     }
@@ -49,8 +49,8 @@ public class MomentumIndicators {
     // periods, 3 and 10.
     //
     // Returns co, ad.
-    public static Pair<double[], double[]> defaultChaikinOscillator(double[] low, double[] high, double[] closing, long[] volume) {
-        return chaikinOscillator(3, 10, low, high, closing, volume);
+    public static Pair<double[], double[]> DefaultChaikinOscillator(double[] low, double[] high, double[] closing, long[] volume) {
+        return ChaikinOscillator(3, 10, low, high, closing, volume);
     }
 
     // Ichimoku Cloud. Also known as Ichimoku Kinko Hyo, is a versatile indicator that defines support and
@@ -63,13 +63,13 @@ public class MomentumIndicators {
     // Chikou Span (Lagging Span) = Closing plotted 26 days in the past.
     //
     // Returns conversionLine, baseLine, leadingSpanA, leadingSpanB, laggingSpan
-    public static Quintuple<double[], double[], double[], double[], double[]> ichimokuCloud(double[] high, double[] low, double[] closing) {
+    public static Quintuple<double[], double[], double[], double[], double[]> IchimokuCloud(double[] high, double[] low, double[] closing) {
         checkSameSize(high, low, closing);
 
-        double[] conversionLine = divideBy(add(max(9, high), min(9, low)), 2);
-        double[] baseLine = divideBy(add(max(26, high), min(26, low)), 2);
+        double[] conversionLine = divideBy(add(Max(9, high), Min(9, low)), 2);
+        double[] baseLine = divideBy(add(Max(26, high), Min(26, low)), 2);
         double[] leadingSpanA = divideBy(add(conversionLine, baseLine), 2);
-        double[] leadingSpanB = divideBy(add(max(52, high), min(52, low)), 2);
+        double[] leadingSpanB = divideBy(add(Max(52, high), Min(52, low)), 2);
         double[] laggingLine = shiftRight(26, closing);
 
         return Quintuple.of(conversionLine, baseLine, leadingSpanA, leadingSpanB, laggingLine);
@@ -84,11 +84,11 @@ public class MomentumIndicators {
     // Histogram = PPO - Signal
     //
     // Returns ppo, signal, histogram
-    public static Triple<double[], double[], double[]> percentagePriceOscillator(int fastPeriod, int slowPeriod, int signalPeriod, double[] price) {
-        double[] fastEma = ema(fastPeriod, price);
-        double[] slowEma = ema(slowPeriod, price);
+    public static Triple<double[], double[], double[]> PercentagePriceOscillator(int fastPeriod, int slowPeriod, int signalPeriod, double[] price) {
+        double[] fastEma = Ema(fastPeriod, price);
+        double[] slowEma = Ema(slowPeriod, price);
         double[] ppo = multiplyBy(divide(subtract(fastEma, slowEma), slowEma), 100);
-        double[] signal = ema(signalPeriod, ppo);
+        double[] signal = Ema(signalPeriod, ppo);
         double[] histogram = subtract(ppo, signal);
 
         return Triple.of(ppo, signal, histogram);
@@ -97,8 +97,8 @@ public class MomentumIndicators {
     // Default Percentage Price Oscillator calculates it with the default periods of 12, 26, 9.
     //
     // Returns ppo, signal, histogram
-    public static Triple<double[], double[], double[]> defaultPercentagePriceOscillator(double[] price) {
-        return percentagePriceOscillator(12, 26, 9, price);
+    public static Triple<double[], double[], double[]> DefaultPercentagePriceOscillator(double[] price) {
+        return PercentagePriceOscillator(12, 26, 9, price);
     }
 
     // Percentage Volume Oscillator (PVO). It is a momentum oscillator for the volume.
@@ -110,12 +110,12 @@ public class MomentumIndicators {
     // Histogram = PVO - Signal
     //
     // Returns pvo, signal, histogram
-    public static Triple<double[], double[], double[]> percentageVolumeOscillator(int fastPeriod, int slowPeriod, int signalPeriod, long[] volume) {
+    public static Triple<double[], double[], double[]> PercentageVolumeOscillator(int fastPeriod, int slowPeriod, int signalPeriod, long[] volume) {
         double[] volumeAsFloat = asDouble(volume);
-        double[] fastEma = ema(fastPeriod, volumeAsFloat);
-        double[] slowEma = ema(slowPeriod, volumeAsFloat);
+        double[] fastEma = Ema(fastPeriod, volumeAsFloat);
+        double[] slowEma = Ema(slowPeriod, volumeAsFloat);
         double[] pvo = multiplyBy(divide(subtract(fastEma, slowEma), slowEma), 100);
-        double[] signal = ema(signalPeriod, pvo);
+        double[] signal = Ema(signalPeriod, pvo);
         double[] histogram = subtract(pvo, signal);
 
         return Triple.of(pvo, signal, histogram);
@@ -124,8 +124,8 @@ public class MomentumIndicators {
     // Default Percentage Volume Oscillator calculates it with the default periods of 12, 26, 9.
     //
     // Returns pvo, signal, histogram
-    public static Triple<double[], double[], double[]> defaultPercentageVolumeOscillator(long[] volume) {
-        return percentageVolumeOscillator(12, 26, 9, volume);
+    public static Triple<double[], double[], double[]> DefaultPercentageVolumeOscillator(long[] volume) {
+        return PercentageVolumeOscillator(12, 26, 9, volume);
     }
 
     // Relative Strength Index (RSI). It is a momentum indicator that measures the magnitude
@@ -135,20 +135,20 @@ public class MomentumIndicators {
     // RSI = 100 - (100 / (1 + RS))
     //
     // Returns rs, rsi
-    public static Pair<double[], double[]> rsi(double[] closing) {
-        return rsiPeriod(14, closing);
+    public static Pair<double[], double[]> Rsi(double[] closing) {
+        return RsiPeriod(14, closing);
     }
 
     // RSI with 2 period, a mean-reversion trading strategy
     // developed by Larry Connors.
     //
     // REturns rs, rsi
-    public static Pair<double[], double[]> rsi2(double[] closing) {
-        return rsiPeriod(2, closing);
+    public static Pair<double[], double[]> Rsi2(double[] closing) {
+        return RsiPeriod(2, closing);
     }
 
     // RsiPeriod allows to calculate the RSI indicator with a non-standard period.
-    public static Pair<double[], double[]> rsiPeriod(int period, double[] closing) {
+    public static Pair<double[], double[]> RsiPeriod(int period, double[] closing) {
         double[] gains = new double[closing.length];
         double[] losses = new double[closing.length];
 
@@ -164,8 +164,8 @@ public class MomentumIndicators {
             }
         }
 
-        double[] meanGains = rma(period, gains);
-        double[] meanLosses = rma(period, losses);
+        double[] meanGains = Rma(period, gains);
+        double[] meanLosses = Rma(period, losses);
 
         double[] rsi = new double[closing.length];
         double[] rs = new double[closing.length];
@@ -185,14 +185,14 @@ public class MomentumIndicators {
     // D = 3-Period SMA of K
     //
     // Returns k, d
-    public static Pair<double[], double[]> stochasticOscillator(double[] high, double[] low, double[] closing) {
+    public static Pair<double[], double[]> StochasticOscillator(double[] high, double[] low, double[] closing) {
         checkSameSize(high, low, closing);
 
-        double[] highestHigh14 = max(14, high);
-        double[] lowestLow14 = min(14, low);
+        double[] highestHigh14 = Max(14, high);
+        double[] lowestLow14 = Min(14, low);
 
         double[] k = multiplyBy(divide(subtract(closing, lowestLow14), subtract(highestHigh14, lowestLow14)), 100);
-        double[] d = sma(3, k);
+        double[] d = Sma(3, k);
 
         return Pair.of(k, d);
     }
@@ -204,11 +204,11 @@ public class MomentumIndicators {
     // Buy when -80 and below. Sell when -20 and above.
     //
     // Returns wr.
-    public static double[] williamsR(double[] low, double[] high, double[] closing) {
+    public static double[] WilliamsR(double[] low, double[] high, double[] closing) {
         int period = 14;
 
-        double[] highestHigh = max(period, high);
-        double[] lowestLow = min(period, low);
+        double[] highestHigh = Max(period, high);
+        double[] lowestLow = Min(period, low);
 
         double[] result = new double[closing.length];
 

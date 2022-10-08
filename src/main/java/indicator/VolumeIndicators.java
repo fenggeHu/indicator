@@ -4,7 +4,7 @@ import static indicator.Helper.*;
 import static indicator.TrendIndicators.*;
 
 /**
- * @author fengge.hu  @Date 2022/10/8
+ * @author jinfeng.hu  @Date 2022/10/8
  **/
 public class VolumeIndicators {
     private static int NVI_STARTING_VALUE = 1000;
@@ -19,7 +19,7 @@ public class VolumeIndicators {
     // AD = Previous AD + CMFV
     //
     // Returns ad.
-    public static double[] accumulationDistribution(double[] high, double[] low, double[] closing, long[] volume) {
+    public static double[] AccumulationDistribution(double[] high, double[] low, double[] closing, long[] volume) {
         checkSameSize(high, low, closing);
 
         double[] ad = new double[closing.length];
@@ -41,7 +41,7 @@ public class VolumeIndicators {
     //                  -volume, if Closing < Closing-Prev
     //
     // Returns obv
-    public static long[] obv(double[] closing, long[] volume) {
+    public static long[] Obv(double[] closing, long[] volume) {
         if (closing.length != volume.length) {
             throw new RuntimeException("not all same size");
         }
@@ -70,8 +70,8 @@ public class VolumeIndicators {
     // Money Flow Index = 100 - (100 / (1 + Money Ratio))
     //
     // Retruns money flow index values.
-    public static double[] moneyFlowIndex(int period, double[] high, double[] low, double[] closing, long[] volume) {
-        double[] typicalPrice = typicalPrice(low, high, closing).getLeft();
+    public static double[] MoneyFlowIndex(int period, double[] high, double[] low, double[] closing, long[] volume) {
+        double[] typicalPrice = TypicalPrice(low, high, closing).getLeft();
         double[] rawMoneyFlow = multiply(typicalPrice, asDouble(volume));
 
         double[] signs = extractSign(diff(rawMoneyFlow, 1));
@@ -81,8 +81,8 @@ public class VolumeIndicators {
         double[] negativeMoneyFlow = keepNegatives(moneyFlow);
 
         double[] moneyRatio = divide(
-                sum(period, positiveMoneyFlow),
-                sum(period, multiplyBy(negativeMoneyFlow, -1)));
+                Sum(period, positiveMoneyFlow),
+                Sum(period, multiplyBy(negativeMoneyFlow, -1)));
 
         double[] moneyFlowIndex = addBy(multiplyBy(pow(addBy(moneyRatio, 1), -1), -100), 100);
 
@@ -91,7 +91,7 @@ public class VolumeIndicators {
 
     // Default money flow index with period 14.
     public static double[] DefaultMoneyFlowIndex(double[] high, double[] low, double[] closing, long[] volume) {
-        return moneyFlowIndex(14, high, low, closing, volume);
+        return MoneyFlowIndex(14, high, low, closing, volume);
     }
 
     // The Force Index (FI) uses the closing price and the volume to assess
@@ -100,13 +100,13 @@ public class VolumeIndicators {
     // Force Index = EMA(period, (Current - Previous) * Volume)
     //
     // Returns force index.
-    public static double[] forceIndex(int period, double[] closing, long[] volume) {
-        return ema(period, multiply(diff(closing, 1), asDouble(volume)));
+    public static double[] ForceIndex(int period, double[] closing, long[] volume) {
+        return Ema(period, multiply(diff(closing, 1), asDouble(volume)));
     }
 
     // The default Force Index (FI) with window size of 13.
-    public static double[] defaultForceIndex(double[] closing, long[] volume) {
-        return forceIndex(13, closing, volume);
+    public static double[] DefaultForceIndex(double[] closing, long[] volume) {
+        return ForceIndex(13, closing, volume);
     }
 
     // The Ease of Movement (EMV) is a volume based oscillator measuring
@@ -118,16 +118,16 @@ public class VolumeIndicators {
     // EMV(14) = SMA(14, EMV(1))
     //
     // Returns ease of movement values.
-    public static double[] easeOfMovement(int period, double[] high, double[] low, long[] volume) {
+    public static double[] EaseOfMovement(int period, double[] high, double[] low, long[] volume) {
         double[] distanceMoved = diff(divideBy(add(high, low), 2), 1);
         double[] boxRatio = divide(divideBy(asDouble(volume), 100000000), subtract(high, low));
-        double[] emv = sma(period, divide(distanceMoved, boxRatio));
+        double[] emv = Sma(period, divide(distanceMoved, boxRatio));
         return emv;
     }
 
     // The default Ease of Movement with the default period of 14.
-    public static double[] defaultEaseOfMovement(double[] high, double[] low, long[] volume) {
-        return easeOfMovement(14, high, low, volume);
+    public static double[] DefaultEaseOfMovement(double[] high, double[] low, long[] volume) {
+        return EaseOfMovement(14, high, low, volume);
     }
 
     // The Volume Price Trend (VPT) provides a correlation between the
@@ -136,10 +136,10 @@ public class VolumeIndicators {
     // VPT = Previous VPT + (Volume * (Current Closing - Previous Closing) / Previous Closing)
     //
     // Returns volume price trend values.
-    public static double[] volumePriceTrend(double[] closing, long[] volume) {
+    public static double[] VolumePriceTrend(double[] closing, long[] volume) {
         double[] previousClosing = shiftRightAndFillBy(1, closing[0], closing);
         double[] vpt = multiply(asDouble(volume), divide(subtract(closing, previousClosing), previousClosing));
-        return sum(vpt.length, vpt);
+        return Sum(vpt.length, vpt);
     }
 
     // The Volume Weighted Average Price (VWAP) provides the average price
@@ -148,14 +148,14 @@ public class VolumeIndicators {
     // VWAP = Sum(Closing * Volume) / Sum(Volume)
     //
     // Returns vwap values.
-    public static double[] volumeWeightedAveragePrice(int period, double[] closing, long[] volume) {
+    public static double[] VolumeWeightedAveragePrice(int period, double[] closing, long[] volume) {
         double[] v = asDouble(volume);
-        return divide(sum(period, multiply(closing, v)), sum(period, v));
+        return divide(Sum(period, multiply(closing, v)), Sum(period, v));
     }
 
     // Default volume weighted average price with period of 14.
-    public static double[] defaultVolumeWeightedAveragePrice(double[] closing, long[] volume) {
-        return volumeWeightedAveragePrice(14, closing, volume);
+    public static double[] DefaultVolumeWeightedAveragePrice(double[] closing, long[] volume) {
+        return VolumeWeightedAveragePrice(14, closing, volume);
     }
 
     // The Negative Volume Index (NVI) is a cumulative indicator using
@@ -170,7 +170,7 @@ public class VolumeIndicators {
     //     NVI = Previous NVI + (((Closing - Previous Closing) / Previous Closing) * Previous NVI)
     //
     // Returns nvi values.
-    public static double[] negativeVolumeIndex(double[] closing, long[] volume) {
+    public static double[] NegativeVolumeIndex(double[] closing, long[] volume) {
         if (closing.length != volume.length) {
             throw new RuntimeException("not all same size");
         }
@@ -197,7 +197,7 @@ public class VolumeIndicators {
     // Money Flow Volume = Money Flow Multiplier * Volume
     // Chaikin Money Flow = Sum(20, Money Flow Volume) / Sum(20, Volume)
     //
-    public static double[] chaikinMoneyFlow(double[] high, double[] low, double[] closing, long[] volume) {
+    public static double[] ChaikinMoneyFlow(double[] high, double[] low, double[] closing, long[] volume) {
         double[] moneyFlowMultiplier = divide(
                 subtract(subtract(closing, low), subtract(high, closing)),
                 subtract(high, low));
@@ -205,8 +205,8 @@ public class VolumeIndicators {
         double[] moneyFlowVolume = Helper.multiply(moneyFlowMultiplier, asDouble(volume));
 
         double[] cmf = divide(
-                sum(CMF_DEFAULT_PERIOD, moneyFlowVolume),
-                sum(CMF_DEFAULT_PERIOD, asDouble(volume)));
+                Sum(CMF_DEFAULT_PERIOD, moneyFlowVolume),
+                Sum(CMF_DEFAULT_PERIOD, asDouble(volume)));
 
         return cmf;
     }

@@ -4,8 +4,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import static indicator.Helper.*;
-import static indicator.TrendIndicators.ema;
-import static indicator.TrendIndicators.sma;
+import static indicator.TrendIndicators.Ema;
+import static indicator.TrendIndicators.Sma;
 
 /**
  * @author jinfeng.hu  @Date 2022-10-07
@@ -20,14 +20,14 @@ public class VolatilityIndicators {
     // Lower Band = SMA(Low * (1 - 4 * (High - Low) / (High + Low)))
     //
     // Returns upper band, middle band, lower band.
-    public static Triple<double[], double[], double[]> accelerationBands(double[] high, double[] low, double[] closing) {
+    public static Triple<double[], double[], double[]> AccelerationBands(double[] high, double[] low, double[] closing) {
         checkSameSize(high, low, closing);
 
         double[] k = divide(subtract(high, low), add(high, low));
 
-        double[] upperBand = sma(20, multiply(high, addBy(multiplyBy(k, 4), 1)));
-        double[] middleBand = sma(20, closing);
-        double[] lowerBand = sma(20, multiply(low, addBy(multiplyBy(k, -4), 1)));
+        double[] upperBand = Sma(20, multiply(high, addBy(multiplyBy(k, 4), 1)));
+        double[] middleBand = Sma(20, closing);
+        double[] lowerBand = Sma(20, multiply(low, addBy(multiplyBy(k, -4), 1)));
 
         return Triple.of(upperBand, middleBand, lowerBand);
     }
@@ -39,7 +39,7 @@ public class VolatilityIndicators {
     // ATR = SMA TR
     //
     // Returns tr, atr
-    public static Pair<double[], double[]> atr(int period, double[] high, double[] low, double[] closing) {
+    public static Pair<double[], double[]> Atr(int period, double[] high, double[] low, double[] closing) {
         checkSameSize(high, low, closing);
 
         double[] tr = new double[closing.length];
@@ -47,7 +47,7 @@ public class VolatilityIndicators {
             tr[i] = Math.max(high[i] - low[i], Math.max(high[i] - closing[i], closing[i] - low[i]));
         }
 
-        double[] atr = sma(period, tr);
+        double[] atr = Sma(period, tr);
         return Pair.of(tr, atr);
     }
 
@@ -61,14 +61,14 @@ public class VolatilityIndicators {
     // Band Width = (Upper Band - Lower Band) / Middle Band
     //
     // Returns bandWidth, bandWidthEma90
-    public static Pair<double[], double[]> bollingerBandWidth(double[] middleBand, double[] upperBand, double[] lowerBand) {
+    public static Pair<double[], double[]> BollingerBandWidth(double[] middleBand, double[] upperBand, double[] lowerBand) {
         checkSameSize(middleBand, upperBand, lowerBand);
         double[] bandWidth = new double[middleBand.length];
         for (int i = 0; i < bandWidth.length; i++) {
             bandWidth[i] = (upperBand[i] - lowerBand[i]) / middleBand[i];
         }
 
-        double[] bandWidthEma90 = ema(90, bandWidth);
+        double[] bandWidthEma90 = Ema(90, bandWidth);
 
         return Pair.of(bandWidth, bandWidthEma90);
     }
@@ -80,10 +80,10 @@ public class VolatilityIndicators {
     // Lower Band = 20-Period SMA - 2 (20-Period Std)
     //
     // Returns middle band, upper band, lower band.
-    public static Triple<double[], double[], double[]> bollingerBands(double[] closing) {
-        double[] middleBand = sma(20, closing);
+    public static Triple<double[], double[], double[]> BollingerBands(double[] closing) {
+        double[] middleBand = Sma(20, closing);
 
-        double[] std = stdFromSma(20, closing, middleBand);
+        double[] std = StdFromSma(20, closing, middleBand);
         double[] std2 = multiplyBy(std, 2);
 
         double[] upperBand = add(middleBand, std2);
@@ -98,10 +98,10 @@ public class VolatilityIndicators {
     // Chandelier Exit Short = 22-Period SMA Low + ATR(22) * 3
     //
     // Returns chandelierExitLong, chandelierExitShort
-    public static Pair<double[], double[]> chandelierExit(double[] high, double[] low, double[] closing) {
-        double[] atr22 = atr(22, high, low, closing).getRight();
-        double[] highestHigh22 = TrendIndicators.max(22, high);
-        double[] lowestLow22 = TrendIndicators.min(22, low);
+    public static Pair<double[], double[]> ChandelierExit(double[] high, double[] low, double[] closing) {
+        double[] atr22 = Atr(22, high, low, closing).getRight();
+        double[] highestHigh22 = TrendIndicators.Max(22, high);
+        double[] lowestLow22 = TrendIndicators.Min(22, low);
 
         double[] chandelierExitLong = new double[closing.length];
         double[] chandelierExitShort = new double[closing.length];
@@ -115,12 +115,12 @@ public class VolatilityIndicators {
     }
 
     // Standard deviation.
-    public static double[] std(int period, double[] values) {
-        return stdFromSma(period, values, sma(period, values));
+    public static double[] Std(int period, double[] values) {
+        return StdFromSma(period, values, Sma(period, values));
     }
 
     // Standard deviation from the given SMA.
-    public static double[] stdFromSma(int period, double[] values, double[] sma) {
+    public static double[] StdFromSma(int period, double[] values, double[] sma) {
         double[] result = new double[values.length];
 
         double sum2 = 0.0;
@@ -150,19 +150,19 @@ public class VolatilityIndicators {
     // SPO = EMA(smooth, PO)
     //
     // Returns po, spo.
-    public static Pair<double[], double[]> projectionOscillator(int period, int smooth, double[] high, double[] low, double[] closing) {
+    public static Pair<double[], double[]> ProjectionOscillator(int period, int smooth, double[] high, double[] low, double[] closing) {
         double[] x = generateNumbers(0, closing.length, 1);
-        double[] mHigh = Regression.movingLeastSquare(period, x, high).getLeft();
-        double[] mLow = Regression.movingLeastSquare(period, x, low).getLeft();
+        double[] mHigh = Regression.MovingLeastSquare(period, x, high).getLeft();
+        double[] mLow = Regression.MovingLeastSquare(period, x, low).getLeft();
 
         double[] vHigh = add(high, multiply(mHigh, x));
         double[] vLow = add(low, multiply(mLow, x));
 
-        double[] pu = TrendIndicators.max(period, vHigh);
-        double[] pl = TrendIndicators.min(period, vLow);
+        double[] pu = TrendIndicators.Max(period, vHigh);
+        double[] pl = TrendIndicators.Min(period, vLow);
 
         double[] po = divide(multiplyBy(subtract(closing, pl), 100), subtract(pu, pl));
-        double[] spo = ema(smooth, po);
+        double[] spo = Ema(smooth, po);
 
         return Pair.of(po, spo);
     }
@@ -177,18 +177,18 @@ public class VolatilityIndicators {
     // Ulcer Index = Sqrt(Squared Average)
     //
     // Returns ui.
-    public static double[] ulcerIndex(int period, double[] closing) {
-        double[] highClosing = TrendIndicators.max(period, closing);
+    public static double[] UlcerIndex(int period, double[] closing) {
+        double[] highClosing = TrendIndicators.Max(period, closing);
         double[] percentageDrawdown = multiplyBy(divide(subtract(closing, highClosing), highClosing), 100);
-        double[] squaredAverage = sma(period, multiply(percentageDrawdown, percentageDrawdown));
+        double[] squaredAverage = Sma(period, multiply(percentageDrawdown, percentageDrawdown));
         double[] ui = sqrt(squaredAverage);
 
         return ui;
     }
 
     // The default ulcer index with the default period of 14.
-    public static double[] defaultUlcerIndex(double[] closing) {
-        return ulcerIndex(14, closing);
+    public static double[] DefaultUlcerIndex(double[] closing) {
+        return UlcerIndex(14, closing);
     }
 
     // The Donchian Channel (DC) calculates three lines generated by moving average
@@ -203,9 +203,9 @@ public class VolatilityIndicators {
     // Middle Channel = (Upper Channel + Lower Channel) / 2
     //
     // Returns upperChannel, middleChannel, lowerChannel.
-    public static Triple<double[], double[], double[]> donchianChannel(int period, double[] closing) {
-        double[] upperChannel = TrendIndicators.max(period, closing);
-        double[] lowerChannel = TrendIndicators.min(period, closing);
+    public static Triple<double[], double[], double[]> DonchianChannel(int period, double[] closing) {
+        double[] upperChannel = TrendIndicators.Max(period, closing);
+        double[] lowerChannel = TrendIndicators.Min(period, closing);
         double[] middleChannel = divideBy(add(upperChannel, lowerChannel), 2);
 
         return Triple.of(upperChannel, middleChannel, lowerChannel);
@@ -220,11 +220,11 @@ public class VolatilityIndicators {
     // Lower Band = EMA(period, closings) - 2 * ATR(period, highs, lows, closings)
     //
     // Returns upperBand, middleLine, lowerBand.
-    public static Triple<double[], double[], double[]> keltnerChannel(int period, double[] high, double[] low, double[] closing) {
-        double[] atr = atr(period, high, low, closing).getRight();
+    public static Triple<double[], double[], double[]> KeltnerChannel(int period, double[] high, double[] low, double[] closing) {
+        double[] atr = Atr(period, high, low, closing).getRight();
         double[] atr2 = multiplyBy(atr, 2);
 
-        double[] middleLine = ema(period, closing);
+        double[] middleLine = Ema(period, closing);
         double[] upperBand = add(middleLine, atr2);
         double[] lowerBand = subtract(middleLine, atr2);
 
@@ -232,8 +232,8 @@ public class VolatilityIndicators {
     }
 
     // The default keltner channel with the default period of 20.
-    public static Triple<double[], double[], double[]> defaultKeltnerChannel(double[] high, double[] low, double[] closing) {
-        return keltnerChannel(20, high, low, closing);
+    public static Triple<double[], double[], double[]> DefaultKeltnerChannel(double[] high, double[] low, double[] closing) {
+        return KeltnerChannel(20, high, low, closing);
     }
 
 }

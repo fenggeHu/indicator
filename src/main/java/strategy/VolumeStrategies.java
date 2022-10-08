@@ -1,10 +1,10 @@
 package strategy;
 
-import static indicator.TrendIndicators.ema;
+import static indicator.TrendIndicators.Ema;
 import static indicator.VolumeIndicators.*;
 
 /**
- * @author fengge.hu  @Date 2022/10/8
+ * @author jinfeng.hu  @Date 2022/10/8
  **/
 public class VolumeStrategies {
 
@@ -33,7 +33,7 @@ public class VolumeStrategies {
     public static Action[] ForceIndexStrategy(final ChartBar asset) {
         Action[] actions = new Action[asset.getDatetime().length];
 
-        double[] forceIndex = defaultForceIndex(asset.close, asset.volume);
+        double[] forceIndex = DefaultForceIndex(asset.close, asset.volume);
 
         for (int i = 0; i < actions.length; i++) {
             if (forceIndex[i] > 0) {
@@ -52,7 +52,7 @@ public class VolumeStrategies {
     public static Action[] EaseOfMovementStrategy(final ChartBar asset) {
         Action[] actions = new Action[asset.getDatetime().length];
 
-        double[] emv = defaultEaseOfMovement(asset.high, asset.low, asset.volume);
+        double[] emv = DefaultEaseOfMovement(asset.high, asset.low, asset.volume);
 
         for (int i = 0; i < actions.length; i++) {
             if (emv[i] > 0) {
@@ -71,7 +71,7 @@ public class VolumeStrategies {
     public static Action[] VolumeWeightedAveragePriceStrategy(final ChartBar asset) {
         Action[] actions = new Action[asset.getDatetime().length];
 
-        double[] vwap = defaultVolumeWeightedAveragePrice(asset.close, asset.volume);
+        double[] vwap = DefaultVolumeWeightedAveragePrice(asset.close, asset.volume);
 
         for (int i = 0; i < actions.length; i++) {
             if (vwap[i] > asset.close[i]) {
@@ -90,8 +90,8 @@ public class VolumeStrategies {
     public static Action[] NegativeVolumeIndexStrategy(final ChartBar asset) {
         Action[] actions = new Action[asset.getDatetime().length];
 
-        double[] nvi = negativeVolumeIndex(asset.close, asset.volume);
-        double[] nvi255 = ema(255, nvi);
+        double[] nvi = NegativeVolumeIndex(asset.close, asset.volume);
+        double[] nvi255 = Ema(255, nvi);
 
         for (int i = 0; i < actions.length; i++) {
             if (nvi[i] < nvi255[i]) {
@@ -110,7 +110,7 @@ public class VolumeStrategies {
     public static Action[] ChaikinMoneyFlowStrategy(final ChartBar asset) {
         Action[] actions = new Action[asset.getDatetime().length];
 
-        double[] cmf = chaikinMoneyFlow(
+        double[] cmf = ChaikinMoneyFlow(
                 asset.high,
                 asset.low,
                 asset.close,

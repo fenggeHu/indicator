@@ -3,18 +3,18 @@ package strategy;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
-import static indicator.VolatilityIndicators.bollingerBands;
-import static indicator.VolatilityIndicators.projectionOscillator;
+import static indicator.VolatilityIndicators.BollingerBands;
+import static indicator.VolatilityIndicators.ProjectionOscillator;
 
 /**
- * @author fengge.hu  @Date 2022/10/8
+ * @author jinfeng.hu  @Date 2022/10/8
  **/
 public class VolatilityStrategies {
 
     // Bollinger bands strategy public static Action[]tion.
     public static Action[] BollingerBandsStrategy(final ChartBar asset) {
         Action[] actions = new Action[asset.getDatetime().length];
-        Triple<double[], double[], double[]> triple = bollingerBands(asset.close);
+        Triple<double[], double[], double[]> triple = BollingerBands(asset.close);
         double[] upperBand = triple.getMiddle();
         double[] lowerBand = triple.getRight();
 
@@ -35,7 +35,7 @@ public class VolatilityStrategies {
     public static Action[] ProjectionOscillatorStrategy(int period, int smooth, final ChartBar asset) {
         Action[] actions = new Action[asset.getDatetime().length];
 
-        Pair<double[], double[]> pair = projectionOscillator(
+        Pair<double[], double[]> pair = ProjectionOscillator(
                 period,
                 smooth,
                 asset.high,
