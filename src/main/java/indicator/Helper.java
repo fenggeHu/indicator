@@ -6,7 +6,7 @@ package indicator;
 public class Helper {
 
     // subtract values2 from values1.
-    public static double[] subtract(double[] values1, double[] values2) {
+    protected static double[] subtract(double[] values1, double[] values2) {
         double[] subtract = multiplyBy(values2, -1);
         return add(values1, subtract);
     }
@@ -49,7 +49,7 @@ public class Helper {
     }
 
     // Divide values by divider.
-    public static double[] divideBy(double[] values, double divider) {
+    protected static double[] divideBy(double[] values, double divider) {
         return multiplyBy(values, 1 / divider);
     }
 
@@ -66,7 +66,7 @@ public class Helper {
     }
 
     // Add values1 and values2.
-    public static double[] add(double[] values1, double[] values2) {
+    protected static double[] add(double[] values1, double[] values2) {
         checkSameSize(values1, values2);
 
         double[] result = new double[values1.length];
@@ -131,6 +131,17 @@ public class Helper {
         return shiftRightAndFillBy(period, 0, values);
     }
 
+
+    // Sqrt of given values.
+    protected static double[] sqrt(double[] values) {
+        double[] result = new double[values.length];
+
+        for (int i = 0; i < values.length; i++) {
+            result[i] = Math.sqrt(values[i]);
+        }
+
+        return result;
+    }
 
     // Abs of given values.
     public static double[] abs(double[] values) {
