@@ -16,10 +16,7 @@ public class ChartBar {
     public double[] close;
     public double[] high;
     public double[] low;
-    // 成交量
     public long[] volume;
-    // 成交额
-    public long[] turnover;
 
     public ChartBar(int size) {
         this.datetime = new String[size];
@@ -28,6 +25,5 @@ public class ChartBar {
         this.high = new double[size];
         this.low = new double[size];
         this.volume = new long[size];
-        this.turnover = new long[size];
     }
 }
