@@ -1,4 +1,4 @@
-package strategy;
+package model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

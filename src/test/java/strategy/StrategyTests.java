@@ -1,5 +1,7 @@
 package strategy;
 
+import model.Action;
+import model.ChartBar;
 import org.junit.Test;
 
 import java.util.Random;

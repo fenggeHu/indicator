@@ -2,6 +2,8 @@ package strategy;
 
 import base.Pair;
 import base.Triple;
+import model.Action;
+import model.ChartBar;
 
 import static indicator.VolatilityIndicators.BollingerBands;
 import static indicator.VolatilityIndicators.ProjectionOscillator;

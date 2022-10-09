@@ -1,5 +1,8 @@
 package strategy;
 
+import model.Action;
+import model.ChartBar;
+
 import static indicator.TrendIndicators.Ema;
 import static indicator.VolumeIndicators.*;
 

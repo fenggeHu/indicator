@@ -1,5 +1,8 @@
 package strategy;
 
+import model.Action;
+import model.ChartBar;
+
 /**
  * 策略接口
  *

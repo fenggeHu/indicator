@@ -1,5 +1,8 @@
 package strategy;
 
+import model.Action;
+import model.ChartBar;
+
 import java.util.ArrayList;
 import java.util.List;
 
