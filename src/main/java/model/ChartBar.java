@@ -27,6 +27,16 @@ public class ChartBar {
         this.volume = new long[size];
     }
 
+    //
+    public String title() {
+        return "datetime,open,high,low,close,volume";
+    }
+    
+    public String row(int i) {
+        return String.format("%s,%.3f,%.3f,%.3f,%.3f,%d",
+                datetime[i], open[i], high[i], low[i], close[i], volume[i]);
+    }
+
     // date,ohlcv
     @Override
     public String toString() {

@@ -28,6 +28,7 @@ public class StrategyTests {
                 TrendStrategies.MakeKdjStrategy(9, 3, 3));
 
         ChartBar chartBar = new ChartBar();
+        System.out.println(chartBar.title());
         int max = 30;
         chartBar.datetime = new String[max];
         chartBar.open = new double[max];
@@ -42,6 +43,7 @@ public class StrategyTests {
             chartBar.low[i] = chartBar.open[i] - 5;
             chartBar.close[i] = nextDouble(chartBar.low[i], chartBar.high[i]);
             chartBar.volume[i] = (long) nextDouble(100000, 3000000);
+            System.out.println(chartBar.row(i));
         }
 
         Action[] actions = strategy.run(chartBar);
