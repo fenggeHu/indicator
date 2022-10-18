@@ -13,4 +13,8 @@ public class Bar {
     public double high;
     public double low;
     public long volume;
+
+    public String title() {
+        return "datetime,open,high,low,close,volume";
+    }
 }
