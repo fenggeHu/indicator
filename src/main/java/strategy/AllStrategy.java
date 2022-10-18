@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description: 复合策略 - 多个策略的组合,取'&&'关系
- * <p>
+ * Description: 复合策略,多个策略的组合
  * // The AllStrategies takes one or more Strategy and
  * // provides a Strategy that will return a BUY or SELL action
  * // if all strategies are returning the same action, otherwise it
