@@ -421,6 +421,25 @@ public class TrendIndicators {
         return result;
     }
 
+    // 重写 - 并调换参数位置
+    public static Double[] Sma(double[] values, int period) {
+        Double[] result = new Double[values.length];
+        double sum = 0.00;
+
+        for (int i = 0; i < values.length; i++) {
+            sum += values[i];
+
+            if (i >= period) {
+                sum -= values[i - period];
+            }
+            if (i >= period - 1) {
+                result[i] = sum / period;
+            }
+        }
+
+        return result;
+    }
+
     // Since last values change.
     public static int[] Since(double[] values) {
         int[] result = new int[values.length];
