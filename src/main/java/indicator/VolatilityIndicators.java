@@ -5,7 +5,7 @@ import base.Triple;
 
 import static indicator.Helper.*;
 import static indicator.TrendIndicators.Ema;
-import static indicator.TrendIndicators.Sma;
+import static indicator.TrendIndicators.sma;
 
 /**
  * @author jinfeng.hu  @Date 2022-10-07
@@ -25,9 +25,9 @@ public class VolatilityIndicators {
 
         double[] k = divide(subtract(high, low), add(high, low));
 
-        double[] upperBand = Sma(20, multiply(high, addBy(multiplyBy(k, 4), 1)));
-        double[] middleBand = Sma(20, closing);
-        double[] lowerBand = Sma(20, multiply(low, addBy(multiplyBy(k, -4), 1)));
+        double[] upperBand = sma(20, multiply(high, addBy(multiplyBy(k, 4), 1)));
+        double[] middleBand = sma(20, closing);
+        double[] lowerBand = sma(20, multiply(low, addBy(multiplyBy(k, -4), 1)));
 
         return Triple.of(upperBand, middleBand, lowerBand);
     }
@@ -47,7 +47,7 @@ public class VolatilityIndicators {
             tr[i] = Math.max(high[i] - low[i], Math.max(high[i] - closing[i], closing[i] - low[i]));
         }
 
-        double[] atr = Sma(period, tr);
+        double[] atr = sma(period, tr);
         return Pair.of(tr, atr);
     }
 
@@ -81,7 +81,7 @@ public class VolatilityIndicators {
     //
     // Returns middle band, upper band, lower band.
     public static Triple<double[], double[], double[]> BollingerBands(double[] closing) {
-        double[] middleBand = Sma(20, closing);
+        double[] middleBand = sma(20, closing);
 
         double[] std = StdFromSma(20, closing, middleBand);
         double[] std2 = multiplyBy(std, 2);
@@ -116,7 +116,7 @@ public class VolatilityIndicators {
 
     // Standard deviation.
     public static double[] Std(int period, double[] values) {
-        return StdFromSma(period, values, Sma(period, values));
+        return StdFromSma(period, values, sma(period, values));
     }
 
     // Standard deviation from the given SMA.
@@ -180,7 +180,7 @@ public class VolatilityIndicators {
     public static double[] UlcerIndex(int period, double[] closing) {
         double[] highClosing = TrendIndicators.Max(period, closing);
         double[] percentageDrawdown = multiplyBy(divide(subtract(closing, highClosing), highClosing), 100);
-        double[] squaredAverage = Sma(period, multiply(percentageDrawdown, percentageDrawdown));
+        double[] squaredAverage = sma(period, multiply(percentageDrawdown, percentageDrawdown));
         double[] ui = sqrt(squaredAverage);
 
         return ui;

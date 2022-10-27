@@ -97,7 +97,7 @@ upperChannel, middleChannel, lowerChannel := indicator.DonchianChannel(period, c
 
 #### Keltner Channel (KC)
 
-The [KeltnerChannel](https://pkg.go.dev/github.com/cinar/indicator#KeltnerChannel) provides volatility-based bands that are placed on either side of an asset's price and can aid in determining the direction of a trend.
+The [KeltnerChannel](https://pkg.go.dev/github.com/cinar/indicator#KeltnerChannel) provides volatility-based bands that are placed on either side of an asset's price and can aid in determining the direction of a trendEnum.
 
 ```
 Middle Line = EMA(period, closings)

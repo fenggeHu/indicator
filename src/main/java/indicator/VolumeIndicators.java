@@ -121,7 +121,7 @@ public class VolumeIndicators {
     public static double[] EaseOfMovement(int period, double[] high, double[] low, long[] volume) {
         double[] distanceMoved = diff(divideBy(add(high, low), 2), 1);
         double[] boxRatio = divide(divideBy(asDouble(volume), 100000000), subtract(high, low));
-        double[] emv = Sma(period, divide(distanceMoved, boxRatio));
+        double[] emv = sma(period, divide(distanceMoved, boxRatio));
         return emv;
     }
 

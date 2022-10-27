@@ -21,8 +21,8 @@ public class MomentumIndicators {
     // Returns ao.
     public static double[] AwesomeOscillator(double[] low, double[] high) {
         double[] medianPrice = divideBy(add(low, high), 2);
-        double[] sma5 = Sma(5, medianPrice);
-        double[] sma34 = Sma(34, medianPrice);
+        double[] sma5 = sma(5, medianPrice);
+        double[] sma34 = sma(34, medianPrice);
         double[] ao = subtract(sma5, sma34);
 
         return ao;
@@ -192,7 +192,7 @@ public class MomentumIndicators {
         double[] lowestLow14 = Min(14, low);
 
         double[] k = multiplyBy(divide(subtract(closing, lowestLow14), subtract(highestHigh14, lowestLow14)), 100);
-        double[] d = Sma(3, k);
+        double[] d = sma(3, k);
 
         return Pair.of(k, d);
     }

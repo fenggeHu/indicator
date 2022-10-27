@@ -107,8 +107,8 @@ public class TrendIndicators {
     // Returns cmi.
     public static double[] CommunityChannelIndex(int period, double[] high, double[] low, double[] closing) {
         double[] tp = TypicalPrice(low, high, closing).getLeft();
-        double[] ma = Sma(period, tp);
-        double[] md = Sma(period, abs(subtract(tp, ma)));
+        double[] ma = sma(period, tp);
+        double[] md = sma(period, abs(subtract(tp, ma)));
         double[] cci = divide(subtract(tp, ma), multiplyBy(md, 0.015));
         cci[0] = 0;
 
@@ -268,15 +268,15 @@ public class TrendIndicators {
     // Based on video https://www.youtube.com/watch?v=MuEpGBAH7pw&t=0s.
     //
     // Returns psar, trend
-    public static Pair<double[], Trend[]> ParabolicSar(double[] high, double[] low, double[] closing) {
+    public static Pair<double[], TrendEnum[]> ParabolicSar(double[] high, double[] low, double[] closing) {
         checkSameSize(high, low);
 
-        Trend[] trend = new Trend[high.length];
+        TrendEnum[] trendEnum = new TrendEnum[high.length];
         double[] psar = new double[high.length];
 
         double af, ep;
 
-        trend[0] = Trend.Falling;
+        trendEnum[0] = TrendEnum.Falling;
         psar[0] = high[0];
         af = psarAfStep;
         ep = low[0];
@@ -286,7 +286,7 @@ public class TrendIndicators {
              i++) {
             psar[i] = psar[i - 1] - ((psar[i - 1] - ep) * af);
 
-            if (trend[i - 1] == Trend.Falling) {
+            if (trendEnum[i - 1] == TrendEnum.Falling) {
                 psar[i] = Math.max(psar[i], high[i - 1]);
                 if (i > 1) {
                     psar[i] = Math.max(psar[i], high[i - 2]);
@@ -309,21 +309,21 @@ public class TrendIndicators {
             double prevEp = ep;
 
             if (psar[i] > closing[i]) {
-                trend[i] = Trend.Falling;
+                trendEnum[i] = TrendEnum.Falling;
                 ep = Math.min(ep, low[i]);
             } else {
-                trend[i] = Trend.Rising;
+                trendEnum[i] = TrendEnum.Rising;
                 ep = Math.max(ep, high[i]);
             }
 
-            if (trend[i] != trend[i - 1]) {
+            if (trendEnum[i] != trendEnum[i - 1]) {
                 af = psarAfStep;
             } else if (prevEp != ep && af < psarAfMax) {
                 af += psarAfStep;
             }
         }
 
-        return Pair.of(psar, trend);
+        return Pair.of(psar, trendEnum);
     }
 
     // The Qstick function calculates the ratio of recent up and down bars.
@@ -332,7 +332,7 @@ public class TrendIndicators {
     //
     // Returns qs.
     public static double[] Qstick(int period, double[] opening, double[] closing) {
-        double[] qs = Sma(period, subtract(closing, opening));
+        double[] qs = sma(period, subtract(closing, opening));
         return qs;
     }
 
@@ -360,8 +360,8 @@ public class TrendIndicators {
 
         double[] rsv = multiplyBy(divide(subtract(closing, lowest), subtract(highest, lowest)), 100);
 
-        double[] k = Sma(kPeriod, rsv);
-        double[] d = Sma(dPeriod, k);
+        double[] k = sma(kPeriod, rsv);
+        double[] d = sma(dPeriod, k);
         double[] j = subtract(multiplyBy(k, 3), multiplyBy(d, 2));
 
         return Triple.of(k, d, j);
@@ -402,7 +402,7 @@ public class TrendIndicators {
     }
 
     // Simple Moving Average (SMA).
-    public static double[] Sma(int period, double[] values) {
+    public static double[] sma(int period, double[] values) {
         double[] result = new double[values.length];
         double sum = 0.00;
 
@@ -497,7 +497,7 @@ public class TrendIndicators {
             n2 = n1;
         }
 
-        double[] trima = Sma(n1, Sma(n2, values));
+        double[] trima = sma(n1, sma(n2, values));
         return trima;
     }
 
@@ -530,7 +530,7 @@ public class TrendIndicators {
     // Returns typical price, 20-Period SMA.
     public static Pair<double[], double[]> TypicalPrice(double[] low, double[] high, double[] closing) {
         checkSameSize(high, low, closing);
-        double[] sma20 = Sma(20, closing);
+        double[] sma20 = sma(20, closing);
         double[] ta = new double[closing.length];
 
         for (int i = 0; i < ta.length; i++) {

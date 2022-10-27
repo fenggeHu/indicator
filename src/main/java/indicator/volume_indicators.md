@@ -1,6 +1,6 @@
 ### Volume Indicators
 
-Volumne indicators measure the strength of a trend based the volume.
+Volumne indicators measure the strength of a trendEnum based the volume.
 
 - [Accumulation/Distribution (A/D)](#accumulationdistribution-ad)
 - [Chaikin Money Flow (CMF)](#chaikin-money-flow-cmf)
@@ -9,7 +9,7 @@ Volumne indicators measure the strength of a trend based the volume.
 - [Money Flow Index (MFI)](#money-flow-index-mfi)
 - [Negative Volume Index (NVI)](#negative-volume-index-nvi)
 - [On-Balance Volume (OBV)](#on-balance-volume-obv)
-- [Volume Price Trend (VPT)](#volume-price-trend-vpt)
+- [Volume Price Trend (VPT)](#volume-price-trendEnum-vpt)
 - [Volume Weighted Average Price (VWAP)](#volume-weighted-average-price-vwap)
 
 #### Accumulation/Distribution (A/D)

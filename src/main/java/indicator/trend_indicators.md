@@ -1,6 +1,6 @@
 ### Trend Indicators
 
-Trend indicators measure the direction and strength of a trend.
+Trend indicators measure the direction and strength of a trendEnum.
 
 - [Absolute Price Oscillator (APO)](#absolute-price-oscillator-apo)
 - [Aroon Indicator](#aroon-indicator)
@@ -29,7 +29,7 @@ Trend indicators measure the direction and strength of a trend.
 
 #### Absolute Price Oscillator (APO)
 
-The [AbsolutePriceOscillator](https://pkg.go.dev/github.com/cinar/indicator#AbsolutePriceOscillator) function calculates a technical indicator that is used to follow trends. APO crossing above zero indicates bullish, while crossing below zero indicates bearish. Positive value is upward trend, while negative value is downward trend.
+The [AbsolutePriceOscillator](https://pkg.go.dev/github.com/cinar/indicator#AbsolutePriceOscillator) function calculates a technical indicator that is used to follow trends. APO crossing above zero indicates bullish, while crossing below zero indicates bearish. Positive value is upward trendEnum, while negative value is downward trendEnum.
 
 ```
 Fast = Ema(fastPeriod, values)
@@ -45,7 +45,7 @@ Most frequently used fast and short periods are 14 and 30. The [DefaultAbsoluePr
 
 #### Aroon Indicator
 
-The [Aroon](https://pkg.go.dev/github.com/cinar/indicator#Aroon) function calculates a technical indicator that is used to identify trend changes in the price of a stock, as well as the strength of that trend. It consists of two lines, Aroon Up, and Aroon Down. The Aroon Up line measures measures the strength of the uptrend, and the Aroon Down measures the strength of the downtrend. When Aroon Up is above Aroon Down, it indicates bullish price, and when Aroon Down is above Aroon Up, it indicates bearish price.
+The [Aroon](https://pkg.go.dev/github.com/cinar/indicator#Aroon) function calculates a technical indicator that is used to identify trendEnum changes in the price of a stock, as well as the strength of that trendEnum. It consists of two lines, Aroon Up, and Aroon Down. The Aroon Up line measures measures the strength of the uptrend, and the Aroon Down measures the strength of the downtrend. When Aroon Up is above Aroon Down, it indicates bullish price, and when Aroon Down is above Aroon Up, it indicates bearish price.
 
 ```
 Aroon Up = ((25 - Period Since Last 25 Period High) / 25) * 100
@@ -58,7 +58,7 @@ aroonUp, aroonDown := indicator.Aroon(high, low)
 
 #### Balance of Power (BOP)
 
-The [BalanceOfPower](https://pkg.go.dev/github.com/cinar/indicator#BalanceOfPower) function calculates the strength of buying and selling pressure. Positive value indicates an upward trend, and negative value indicates a downward trend. Zero indicates a balance between the two.
+The [BalanceOfPower](https://pkg.go.dev/github.com/cinar/indicator#BalanceOfPower) function calculates the strength of buying and selling pressure. Positive value indicates an upward trendEnum, and negative value indicates a downward trendEnum. Zero indicates a balance between the two.
 
 ```
 BOP = (Closing - Opening) / (High - Low)
@@ -107,7 +107,7 @@ result := indicator.DefaultCommunityChannelIndex(high, low, closing)
 
 The [Dema](https://pkg.go.dev/github.com/cinar/indicator#Dema) function calculates the Double Exponential Moving Average (DEMA) for a given period.
 
-The double exponential moving average (DEMA) is a technical indicator introduced by Patrick Mulloy. The purpose is to reduce the amount of noise present in price charts used by technical traders. The DEMA uses two exponential moving averages (EMAs) to eliminate lag. It helps confirm uptrends when the price is above the average, and helps confirm downtrends when the price is below the average. When the price crosses the average that may signal a trend change.
+The double exponential moving average (DEMA) is a technical indicator introduced by Patrick Mulloy. The purpose is to reduce the amount of noise present in price charts used by technical traders. The DEMA uses two exponential moving averages (EMAs) to eliminate lag. It helps confirm uptrends when the price is above the average, and helps confirm downtrends when the price is below the average. When the price crosses the average that may signal a trendEnum change.
 
 ```
 DEMA = (2 * EMA(values)) - EMA(EMA(values))
@@ -129,7 +129,7 @@ result := indicator.Ema(2, []float64{2, 4, 6, 8, 12, 14, 16, 18, 20})
 
 #### Mass Index (MI)
 
-The [MassIndex](https://pkg.go.dev/github.com/cinar/indicator#MassIndex) uses the high-low range to identify trend reversals based on range expansions.
+The [MassIndex](https://pkg.go.dev/github.com/cinar/indicator#MassIndex) uses the high-low range to identify trendEnum reversals based on range expansions.
 
 ```
 Singe EMA = EMA(9, Highs - Lows)
@@ -144,7 +144,7 @@ result := indicator.MassIndex(high, low)
 
 #### Moving Average Convergence Divergence (MACD)
 
-The [Macd](https://pkg.go.dev/github.com/cinar/indicator#Macd) function calculates a trend-following momentum indicator that shows the relationship between two moving averages of price.
+The [Macd](https://pkg.go.dev/github.com/cinar/indicator#Macd) function calculates a trendEnum-following momentum indicator that shows the relationship between two moving averages of price.
 
 ```
 MACD = 12-Period EMA - 26-Period EMA.
@@ -181,32 +181,32 @@ sum := indicator.Sum(period, values)
 
 #### Parabolic SAR
 
-The [ParabolicSar](https://pkg.go.dev/github.com/cinar/indicator#ParabolicSar) function calculates an identifier for the trend and the trailing stop.
+The [ParabolicSar](https://pkg.go.dev/github.com/cinar/indicator#ParabolicSar) function calculates an identifier for the trendEnum and the trailing stop.
 
 ```
 PSAR = PSAR[i - 1] - ((PSAR[i - 1] - EP) * AF)
 ```
 
-If the trend is Falling:
+If the trendEnum is Falling:
 
 - PSAR is the maximum of PSAR or the previous two high values.
 - If the current high is greather than or equals to PSAR, use EP.
 
-If the trend is Rising:
+If the trendEnum is Rising:
 
 - PSAR is the minimum of PSAR or the previous two low values.
 - If the current low is less than or equials to PSAR, use EP.
 
-If PSAR is greather than the closing, trend is falling, and the EP is set to the minimum of EP or the low.
+If PSAR is greather than the closing, trendEnum is falling, and the EP is set to the minimum of EP or the low.
 
-If PSAR is lower than or equals to the closing, trend is rising, and the EP is set to the maximum of EP or the high.
+If PSAR is lower than or equals to the closing, trendEnum is rising, and the EP is set to the maximum of EP or the high.
 
-If the trend is the same, and AF is less than 0.20, increment it by 0.02. If the trend is not the same, set AF to 0.02.
+If the trendEnum is the same, and AF is less than 0.20, increment it by 0.02. If the trendEnum is not the same, set AF to 0.02.
 
 Based on video [How to Calculate the PSAR Using Excel - Revised Version](https://www.youtube.com/watch?v=MuEpGBAH7pw&t=0s).
 
 ```Golang
-psar, trend := indicator.ParabolicSar(high, low, closing)
+psar, trendEnum := indicator.ParabolicSar(high, low, closing)
 ```
 
 #### Qstick
@@ -223,7 +223,7 @@ qs := indicator.Qstick(period, closing, opening)
 
 #### Random Index (KDJ)
 
-The [Kdj](https://pkg.go.dev/github.com/cinar/indicator#Kdj) function calculates the KDJ  indicator, also known as the Random Index. KDJ is calculated similar to the Stochastic Oscillator with the difference of having the J line. It is used to analyze the trend and entry points.
+The [Kdj](https://pkg.go.dev/github.com/cinar/indicator#Kdj) function calculates the KDJ  indicator, also known as the Random Index. KDJ is calculated similar to the Stochastic Oscillator with the difference of having the J line. It is used to analyze the trendEnum and entry points.
 
 The K and D lines show if the asset is overbought when they crosses above 80%, and oversold when they crosses below 20%. The J line represents the divergence.
 
@@ -351,7 +351,7 @@ vwma := indicator.Vwma(period, closing, volume)
 
 #### Vortex Indicator
 
-The [Vortex](https://pkg.go.dev/github.com/cinar/indicator#Vortex) function provides two oscillators that capture positive and negative trend movement. A bullish signal triggers when the positive trend indicator crosses above the negative trend indicator or a key level. A bearish signal triggers when the negative trend indicator crosses above the positive trend indicator or a key level.
+The [Vortex](https://pkg.go.dev/github.com/cinar/indicator#Vortex) function provides two oscillators that capture positive and negative trendEnum movement. A bullish signal triggers when the positive trendEnum indicator crosses above the negative trendEnum indicator or a key level. A bearish signal triggers when the negative trendEnum indicator crosses above the positive trendEnum indicator or a key level.
 
 ```
 +VM = Abs(Current High - Prior Low)

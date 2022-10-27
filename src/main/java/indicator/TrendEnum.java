@@ -4,7 +4,7 @@ package indicator;
  * 趋势方向
  * @author jinfeng.hu  @Date 2022-10-07
  **/
-public enum Trend {
+public enum TrendEnum {
     Falling(-1), Rising(1);
 
     private int value;
@@ -13,7 +13,7 @@ public enum Trend {
         return value;
     }
 
-    Trend(int i) {
+    TrendEnum(int i) {
         this.value = i;
     }
 }

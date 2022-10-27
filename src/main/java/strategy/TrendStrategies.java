@@ -165,7 +165,7 @@ public class TrendStrategies {
     public static Action[] VwmaStrategy(final ChartBar asset, int period) {
         Action[] actions = new Action[asset.getDatetime().length];
 
-        double[] sma = Sma(period, asset.close);
+        double[] sma = sma(period, asset.close);
         double[] vwma = Vwma(period, asset.close, asset.volume);
 
         for (int i = 0; i < actions.length; i++) {
