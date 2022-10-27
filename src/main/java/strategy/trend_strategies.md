@@ -1,11 +1,11 @@
 ### Trend Strategies
 
-Trend strategies generate signals based on a trend indicator.
+Trend strategies generate signals based on a trendEnum indicator.
 
 - [Chande Forecast Oscillator Strategy](#chande-forecast-oscillator-strategy)
 - [MACD Strategy](#macd-strategy)
 - [KDJ Strategy](#kdj-strategy)
-- [Trend Strategy](#trend-strategy)
+- [Trend Strategy](#trendEnum-strategy)
 - [Volume Weighted Moving Average (VWMA) Strategy](#volume-weighted-moving-average-vwma-strategy)
 
 #### Chande Forecast Oscillator Strategy
