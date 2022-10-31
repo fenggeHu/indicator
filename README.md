@@ -5,6 +5,9 @@
 - 原代码的Asset改为ChartBar（为了与我其它项目保持一致）
 - 使用可参考：StrategyTests.testStrategy()
 
+# talib
+- 尽可能保持与python talib一致或接近。如参数位置顺序保持一致
+
 # example
 ```java
 public class Demo{
