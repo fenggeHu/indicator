@@ -1,11 +1,13 @@
 package talib;
 
 /**
+ * 重写indicator，调整参数位置和返回值
+ *
  * @author jinfeng.hu  @Date 2022/10/31
  **/
 public class Trend {
 
-    // 重写 - 并调换参数位置
+    // Simple Moving Average (SMA).
     public static Double[] Sma(double[] values, int period) {
         Double[] result = new Double[values.length];
         double sum = 0.00;
